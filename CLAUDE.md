@@ -30,6 +30,8 @@ uv run python run.py --data-dir data explain --input data/example_expression.txt
 - `src/irnet/train.py` -- 5-fold stratified CV, bootstrap balancing, early stopping, ensemble inference
 - `run.py` -- CLI: train, predict, explain, info
 - `scripts/prepare_clinical.py` -- Convert raw clinical cohort data (counts + labels) to npz format
+- `scripts/generate_plots.py` -- Generate presentation plots (prediction dist, pathways, ROC/PR, heatmaps)
+- `docs/architecture.svg` -- Model architecture diagram
 
 ## Key Concepts
 

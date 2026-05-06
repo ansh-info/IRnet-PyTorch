@@ -145,7 +145,10 @@ Patient163    0.4512          Non-responder
 .
 ├── run.py                  # CLI entry point
 ├── scripts/
-│   └── prepare_clinical.py # Convert raw clinical cohorts to npz format
+│   ├── prepare_clinical.py # Convert raw clinical cohorts to npz format
+│   └── generate_plots.py   # Generate presentation plots from results
+├── docs/
+│   └── architecture.svg    # Model architecture diagram
 ├── src/irnet/
 │   ├── data.py             # Data loading, KEGG graph construction, preprocessing
 │   ├── model.py            # PathwayMappingLayer + GAT + GlobalAttention + FocalLoss
