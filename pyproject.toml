@@ -1,6 +1,6 @@
 [project]
 name = "irnet"
-version = "0.1.0"
+version = "1.0.0"
 description = "Immunotherapy Response Prediction using Pathway Knowledge-Informed GNN"
 readme = "README.md"
 requires-python = ">=3.12"
