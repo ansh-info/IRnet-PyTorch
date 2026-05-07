@@ -40,6 +40,7 @@ This is more verbose than TF but gives full control over the training process.
 
 from __future__ import annotations
 
+import random
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -207,7 +208,6 @@ def train(
     if config is None:
         config = TrainConfig()
 
-    import random
     random.seed(config.random_seed)
     np.random.seed(config.random_seed)
     torch.manual_seed(config.random_seed)
