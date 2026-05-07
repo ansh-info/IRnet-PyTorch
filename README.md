@@ -1,6 +1,6 @@
 # IRnet Reproduce
 
-PyTorch + PyG reproduction of [IRnet](https://github.com/yuexujiang/IRnet) -- Immunotherapy Response Prediction using Pathway Knowledge-Informed Graph Neural Network.
+PyTorch + PyG reproduction of [IRnet](https://www.sciencedirect.com/science/article/pii/S2090123224003205) -- Immunotherapy Response Prediction using Pathway Knowledge-Informed Graph Neural Network.
 
 ## Problem
 

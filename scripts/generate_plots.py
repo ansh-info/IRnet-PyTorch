@@ -222,21 +222,48 @@ def plot_roc_pr(
     print(f"  roc_pr_curve.png (AUC={roc_auc:.3f}, AP={ap:.3f})")
 
     # Confusion matrix
-    fig, ax = plt.subplots(figsize=(5, 4))
+    fig, ax = plt.subplots(figsize=(6.5, 6.0))
+    fig.subplots_adjust(bottom=0.22)
     cm = confusion_matrix(y, preds)
     im = ax.imshow(cm, cmap="Blues", interpolation="nearest")
     ax.set_xticks([0, 1])
     ax.set_yticks([0, 1])
-    ax.set_xticklabels(["Non-resp", "Responder"])
-    ax.set_yticklabels(["Non-resp", "Responder"])
-    ax.set_xlabel("Predicted")
-    ax.set_ylabel("Actual")
-    ax.set_title("Confusion Matrix")
+    ax.set_xticklabels(["Non-responder\n(SD/PD)", "Responder\n(CR/PR)"])
+    ax.set_yticklabels(["Non-responder\n(SD/PD)", "Responder\n(CR/PR)"])
+    ax.set_ylabel("True Label")
+    ax.set_title("Confusion Matrix (ICI Response)")
+
+    cell_labels = [["TN", "FP"], ["FN", "TP"]]
     for i in range(2):
         for j in range(2):
-            ax.text(j, i, str(cm[i, j]), ha="center", va="center",
-                    color="white" if cm[i, j] > cm.max() / 2 else "black", fontsize=14)
-    plt.colorbar(im, ax=ax, shrink=0.8)
+            text_color = "white" if cm[i, j] > cm.max() / 2 else "black"
+            ax.text(j, i, f"{cm[i, j]}\n({cell_labels[i][j]})",
+                    ha="center", va="center", color=text_color,
+                    fontsize=13, fontweight="bold")
+    plt.colorbar(im, ax=ax, shrink=0.8, label="Count")
+
+    acc = (cm[0, 0] + cm[1, 1]) / cm.sum()
+    sens = cm[1, 1] / (cm[1, 0] + cm[1, 1])
+    spec = cm[0, 0] / (cm[0, 0] + cm[0, 1])
+    ax.set_xlabel(
+        "Predicted Label\n\n"
+        f"Accuracy: {acc:.1%} | Sensitivity: {sens:.1%}"
+        f" | Specificity: {spec:.1%}",
+        fontsize=9,
+    )
+
+    legend_text = (
+        "CR = Complete Response, PR = Partial Response\n"
+        "SD = Stable Disease, PD = Progressive Disease\n"
+        "TP = True Positive, FP = False Positive\n"
+        "TN = True Negative, FN = False Negative"
+    )
+    fig.text(
+        0.98, 0.01, legend_text,
+        ha="right", va="bottom", fontsize=7, fontstyle="italic",
+        bbox=dict(boxstyle="round,pad=0.4", facecolor="#f0f0f0",
+                  edgecolor="#cccccc", alpha=0.9),
+    )
 
     plt.tight_layout()
     plt.savefig(output_dir / "confusion_matrix.png", dpi=150, bbox_inches="tight")
