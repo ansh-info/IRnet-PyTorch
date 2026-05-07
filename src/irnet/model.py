@@ -205,7 +205,7 @@ class IRnet(nn.Module):
             concat=False,  # average heads -> output is (N, gat1_channels)
             dropout=gat1_dropout,
         )
-        self.bn1 = nn.BatchNorm1d(gat1_channels)
+        self.bn1 = nn.BatchNorm1d(gat1_channels, momentum=0.01)
 
         # --- Layer 4: GAT #2 (single head, returns attention for interpretability) ---
         self.gat2 = GATConv(
@@ -216,7 +216,7 @@ class IRnet(nn.Module):
             dropout=gat2_dropout,
         )
         self.gat2_out_channels = gat2_channels * gat2_heads
-        self.bn2 = nn.BatchNorm1d(self.gat2_out_channels)
+        self.bn2 = nn.BatchNorm1d(self.gat2_out_channels, momentum=0.01)
 
         # --- Layer 5: Global Attention Pooling ---
         # Collapses all 344 pathway nodes into one graph-level vector

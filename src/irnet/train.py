@@ -40,6 +40,7 @@ This is more verbose than TF but gives full control over the training process.
 
 from __future__ import annotations
 
+import random
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -103,8 +104,8 @@ class TrainConfig:
     dense_channels: int = 8
 
     # Early stopping
-    patience: int = 50
-    min_delta: float = 0.001
+    patience: int = 400
+    min_delta: float = 0.0
 
     # Output
     checkpoint_dir: str = "checkpoints"
@@ -207,6 +208,12 @@ def train(
     if config is None:
         config = TrainConfig()
 
+    random.seed(config.random_seed)
+    np.random.seed(config.random_seed)
+    torch.manual_seed(config.random_seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(config.random_seed)
+
     device = _get_device(config.device)
     checkpoint_dir = Path(config.checkpoint_dir)
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
@@ -241,7 +248,7 @@ def train(
         train_x, train_y = bootstrap_balance(
             train_x, train_y,
             fold=config.bootstrap_fold,
-            seed=config.random_seed + fold_idx,
+            seed=fold_idx,
         )
         print(f"  After bootstrap: {len(train_y)} ({(train_y == 1).sum()} resp)")
 
@@ -371,8 +378,8 @@ def _train_fold(
         # --- Validation phase ---
         val_metrics = _evaluate(model, val_x_t, val_y_t, criterion)
 
-        # Check for improvement
-        if val_metrics.f1 > best_val_f1 + config.min_delta:
+        # Check for improvement (>= matches original TF implementation)
+        if val_metrics.f1 >= best_val_f1 + config.min_delta:
             best_val_f1 = val_metrics.f1
             best_val_auc = val_metrics.auc
             best_val_acc = val_metrics.accuracy

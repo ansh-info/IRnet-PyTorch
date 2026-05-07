@@ -174,6 +174,37 @@ Patient163    0.4512          Non-responder
 
 Both phases use: 5-fold stratified CV, bootstrap oversampling (2x), focal loss (gamma=2), Adam (lr=1e-4).
 
+## Results
+
+### Phase 1: Pre-training on TCGA (1,162 patients)
+
+| Fold | F1 | AUC | ACC | MCC |
+|------|------|------|------|------|
+| 0 | 0.620 | 0.752 | 0.743 | 0.426 |
+| 1 | 0.554 | 0.699 | 0.717 | 0.349 |
+| 2 | 0.652 | 0.828 | 0.733 | 0.452 |
+| 3 | 0.667 | 0.774 | 0.741 | 0.473 |
+| 4 | 0.534 | 0.691 | 0.677 | 0.287 |
+| **Mean** | **0.605** | **0.749** | **0.722** | **0.397** |
+
+### Phase 2: Fine-tuning on Gide (91 patients, transfer learning)
+
+| Fold | F1 | AUC | ACC | MCC |
+|------|------|------|------|------|
+| 0 | 0.947 | 1.000 | 0.947 | 0.900 |
+| 1 | 0.947 | 0.963 | 0.944 | 0.894 |
+| 2 | 0.800 | 0.700 | 0.778 | 0.550 |
+| 3 | 0.667 | 0.663 | 0.722 | 0.555 |
+| 4 | 0.667 | 0.675 | 0.667 | 0.350 |
+| **Mean** | **0.806** | **0.800** | **0.812** | **0.650** |
+
+### Ensemble Evaluation (5-fold ensemble on Gide)
+
+| Metric | Value |
+|--------|-------|
+| AUC | 0.993 |
+| Average Precision | 0.994 |
+
 ## Data
 
 ### TCGA Pre-training Data (Phase 1)

@@ -370,7 +370,7 @@ def main() -> None:
     train_p.add_argument("--epochs", type=int, default=400)
     train_p.add_argument("--batch-size", type=int, default=20)
     train_p.add_argument("--lr", type=float, default=1e-4)
-    train_p.add_argument("--patience", type=int, default=50)
+    train_p.add_argument("--patience", type=int, default=400)
 
     # --- predict ---
     pred_p = subparsers.add_parser("predict", help="Predict ICI response")
